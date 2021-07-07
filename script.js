@@ -42,6 +42,8 @@ function setup() {
 
   
  function exportPressed(evt) {
+	 // add base64 code into hidden textarea
+	document.getElementById("doodle").value += dataURL;
 	//background - otherwise background will be transparent.
 	exportCanvasContext.fillStyle = "beige";
 	exportCanvasContext.fillRect(0,0,displayWidth,displayHeight);
@@ -75,8 +77,7 @@ function setup() {
 
 
 
-	// add base64 code into hidden textarea
-	document.getElementById("doodle").value += dataURL;
+	
 
 	
 
