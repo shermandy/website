@@ -8,6 +8,8 @@ function setup() {
 	var context = displayCanvas.getContext("2d");
 	var displayWidth = displayCanvas.width;
 	var displayHeight = displayCanvas.height;
+
+	var url = "";
 	
 	var exportCanvas = document.createElement('canvas');
 	exportCanvas.width = displayWidth;
@@ -15,6 +17,29 @@ function setup() {
 	var exportCanvasContext = exportCanvas.getContext("2d");
 	btnExport.addEventListener("click", exportPressed, false);
   
+	document.querySelector("form").addEventListener("submit", handleSubmit);
+	
+
+	function dataURItoBlob(dataURI, type) {
+		// convert base64 to raw binary data held in a string
+		var byteString = atob(dataURI.split(',')[1]);
+	
+		// separate out the mime component
+		var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+	
+		// write the bytes of the string to an ArrayBuffer
+		var ab = new ArrayBuffer(byteString.length);
+		var ia = new Uint8Array(ab);
+		for (var i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i);
+		}
+	
+		// write the ArrayBuffer to a blob, and you're done
+		var bb = new Blob([ab], { type: type });
+		return bb;
+	}
+
+
   
  function exportPressed(evt) {
 	//background - otherwise background will be transparent.
@@ -47,8 +72,31 @@ function setup() {
 	//copy the image into the empty img in the newly opened window:
 	var exportImage = imageWindow.document.getElementById("exportImage");
 	exportImage.src = dataURL;
+
+
+
+	// add base64 code into hidden textarea
+	document.getElementById("doodle").value += dataURL;
+
+	
+
 }
 
+}
+
+
+const handleSubmit = (e) => {
+	e.preventDefault();
+	let myForm = document.getElementById('doodleform');
+	let formData = new FormData(myForm)
+	fetch('/', {
+	  method: 'POST',
+	  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+	  body: new URLSearchParams(formData).toString()
+	}).then(() => console.log('Form successfully submitted')).catch((error) =>
+	  alert(error))
+	
+	
 }
   
 //   function draw() {
