@@ -17,7 +17,7 @@ function setup() {
 	var exportCanvasContext = exportCanvas.getContext("2d");
 	btnExport.addEventListener("click", exportPressed, false);
   
-	document.querySelector("form").addEventListener("submit", handleSubmit);
+	
 	
 
 	function dataURItoBlob(dataURI, type) {
@@ -42,8 +42,6 @@ function setup() {
 
   
  function exportPressed(evt) {
-	 // add base64 code into hidden textarea
-	document.getElementById("doodle").value += dataURL;
 	//background - otherwise background will be transparent.
 	exportCanvasContext.fillStyle = "beige";
 	exportCanvasContext.fillRect(0,0,displayWidth,displayHeight);
@@ -75,9 +73,11 @@ function setup() {
 	var exportImage = imageWindow.document.getElementById("exportImage");
 	exportImage.src = dataURL;
 
+	 // add base64 code into hidden textarea
+	 document.getElementById("doodle").value += dataURL;
 
 
-	
+	 handleSubmit();
 
 	
 
@@ -86,8 +86,7 @@ function setup() {
 }
 
 
-const handleSubmit = (e) => {
-	e.preventDefault();
+const handleSubmit = () => {
 	let myForm = document.getElementById('doodleform');
 	let formData = new FormData(myForm)
 	fetch('/', {
